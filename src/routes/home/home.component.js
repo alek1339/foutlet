@@ -6,27 +6,27 @@ const Home = () => {
     {
       id: 1,
       title: 'hats',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png',
+      imageUrl: 'https://cdn.pixabay.com/photo/2016/11/21/11/16/fashion-1844724__480.jpg',
     },
     {
       id: 2,
       title: 'jackets',
-      imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
+      imageUrl: 'https://cdn.pixabay.com/photo/2016/11/19/15/42/woman-1839955__480.jpg',
     },
     {
       id: 3,
       title: 'sneakers',
-      imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
+      imageUrl: 'https://cdn.pixabay.com/photo/2014/09/03/20/15/shoes-434918__480.jpg',
     },
     {
       id: 4,
       title: 'womens',
-      imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
+      imageUrl: 'https://cdn.pixabay.com/photo/2018/03/01/14/57/portrait-3190849__480.jpg',
     },
     {
       id: 5,
       title: 'mens',
-      imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
+      imageUrl: 'https://cdn.pixabay.com/photo/2016/11/21/14/53/man-1845814__480.jpg',
     },
   ];
 
