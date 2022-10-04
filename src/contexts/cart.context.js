@@ -1,7 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
-  const existingCartItem = findExistingItem(cartItems, productToAdd);
+  const existingCartItem = findItem(cartItems, productToAdd);
 
   if (existingCartItem) {
     return cartItems.map((cartItem) => cartItem.id === productToAdd.id ?
@@ -11,7 +11,7 @@ const addCartItem = (cartItems, productToAdd) => {
 }
 
 const decreaseCartItem = (cartItems, productToDecrease) => {
-  const existingCartItem = findExistingItem(cartItems, productToDecrease);
+  const existingCartItem = findItem(cartItems, productToDecrease);
 
   if (existingCartItem.quantity > 1) {
     return cartItems.map((cartItem) => cartItem.id === productToDecrease.id ?
@@ -25,7 +25,7 @@ const removeItem = (cartItems, productToRemove) => {
   return cartItems.filter((item) => productToRemove.id !== item.id)
 }
 
-const findExistingItem = (cartItems, item) => {
+const findItem = (cartItems, item) => {
   return cartItems.find((product) => product.id === item.id);
 }
 
@@ -34,15 +34,26 @@ export const CartContext = createContext({
   isCartShown: false,
   setIsCartShown: () => { },
   cartItems: [],
-  addItemToCart: () => { }
+  addItemToCart: () => { },
+  totalPrice: 0
 })
 
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    let price = 0;
+
+    cartItems.forEach(item => {
+      price += item.price * item.quantity;
+    })
+    setTotalPrice(price);
+  }, [cartItems])
 
   const addItemToCart = (productToAdd) => {
-    setCartItems(addCartItem(cartItems, productToAdd))
+    setCartItems(() => addCartItem(cartItems, productToAdd));
   }
 
   const decreaseItemFromCart = (productToDecrease) => {
@@ -59,7 +70,8 @@ export const CartProvider = ({ children }) => {
     addItemToCart,
     cartItems,
     decreaseItemFromCart,
-    removeItemFromCart
+    removeItemFromCart,
+    totalPrice
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
