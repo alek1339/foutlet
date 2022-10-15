@@ -1,20 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../contexts/cart.context';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsCartOpen } from '../../store/cart/cart.action';
+
+import { selectCartItems, selectIsCartOpen } from '../../store/cart/cart.selector';
 
 import { CartIconContainer, ItemCount, ShoppingIcon } from './cart-icon.styles.js';
 
 const CartIcon = () => {
-  const { isCartOpen, setIsCartOpen, cartItems } = useContext(CartContext);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const isCartOpen = useSelector(selectIsCartOpen);
   const [quantity, setQuantity] = useState(0);
 
-  const toggleIsCartOpen = () => {
-    setIsCartOpen(!isCartOpen);
-  }
+  const toggleIsCartOpen = () => dispatch(setIsCartOpen(!isCartOpen))
 
   useEffect(() => {
     let carItemsQuantity = 0;
 
-    cartItems.forEach(element => {
+    cartItems && cartItems.forEach(element => {
       carItemsQuantity += element.quantity;
     });
 
