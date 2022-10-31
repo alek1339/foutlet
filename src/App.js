@@ -2,7 +2,7 @@
 import { Routes, Route, } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { useEffect } from "react";
-import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
+import { onAuthStateChangedListener, createUserDocumentFromAuth, getCurrentUser } from './utils/firebase/firebase.utils';
 
 import { setCurrentUser } from './store/user/user.action'
 
@@ -16,16 +16,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const usubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
-      }
-      console.log(user)
-      dispatch({ type: 'SET_CURRENT_USER', payload: user });
-    });
-
-    return usubscribe;
-  }, [dispatch])
+    getCurrentUser().then((user) => console.log(user))
+  }, [])
 
 
   return (
