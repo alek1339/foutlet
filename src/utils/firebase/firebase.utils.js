@@ -1,4 +1,3 @@
-import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -71,7 +70,12 @@ export const getCategoriesAndDocuments = async () => {
   return categoryMap;
 }
 
-export const createUserDocumentFromAuth = async (userAuth, aditionalInformaion = {}) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
+
   const userDocRef = doc(db, 'users', userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
@@ -82,14 +86,18 @@ export const createUserDocumentFromAuth = async (userAuth, aditionalInformaion =
 
     try {
       await setDoc(userDocRef, {
-        displayName, email, createdAt, ...aditionalInformaion
-      })
-    }
-    catch (error) {
-      console.log('Error creating user ', error)
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
+    } catch (error) {
+      console.log('error creating the user', error.message);
     }
   }
-}
+
+  return userSnapshot;
+};
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
@@ -113,7 +121,7 @@ export const getCurrentUser = () => {
       auth,
       (userAuth) => {
         unsubscribe();
-        resolve();
+        resolve(userAuth);
       },
       reject
     )
